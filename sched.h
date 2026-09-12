@@ -1,5 +1,5 @@
 /*
- * Student Name: Gurshmeer Singh
+ * Author: Gurshmeer Singh
  * File Name: sched.h
  * Description: CPU scheduling simulator header file containing function prototypes and structure definitions.
  */
