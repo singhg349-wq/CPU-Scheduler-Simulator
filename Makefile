@@ -1,8 +1,6 @@
-# Student Name: Gurshmeer Singh	
-# Student ID: 3139110 
-# Submission Date:31 may 2026
+# Author: Gurshmeer Singh	
 # File Name: Makefile
-# Description: Builds and tests the CMPT 360 Assignment 2 scheduler.
+# Description: Builds and tests the scheduler.
 
 CC = gcc-13
 CFLAGS = -std=c11 -Wall -Wextra -pedantic
