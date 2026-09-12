@@ -67,6 +67,29 @@ make valgrind
 
 Runs both policies through Valgrind's leak checker.
 
+## Design Notes
+
+- **Two-pass file reading**: `read_processes` scans the workload file once just to count 
+  how many process lines exist, then allocates an array of exactly that size before 
+  reading the file a second time to fill it in. This avoids over-allocating a fixed 
+  buffer or using a dynamically-resizing array, at the cost of opening the file twice.
+
+- **Array-based ready queue for Round Robin**: the ready queue is a plain array sized to 
+  the theoretical maximum number of enqueues (`total_cpu_time + last_arrival + 1`), with 
+  `front`/`back` indices that only move forward rather than wrapping. This keeps enqueue 
+  and dequeue O(1) without needing per-node allocation the way a linked list would.
+
+- **Mid-quantum arrivals**: Round Robin has to account for new processes arriving while 
+  another process is mid-slice. The simulation checks for newly-arrived processes after 
+  every single tick inside the quantum loop, not just when a process is first dequeued, 
+  so a process that arrives partway through someone else's time slice is still queued at 
+  the correct simulated time rather than only being picked up on the next full cycle.
+
+- **Context switch counting**: only transitions between two different non-idle processes 
+  count as a context switch — idle ticks are explicitly excluded so that a process 
+  resuming after CPU idle time isn't miscounted as a switch.
+
+  
 ## Author
 
 Gurshmeer Singh
